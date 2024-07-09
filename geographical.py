@@ -4,13 +4,21 @@ import streamlit as st
 import folium
 from streamlit_folium import folium_static
 import pandas as pd
+import json
+from urllib.request import urlopen
+from datetime import timedelta
+
+# Reading Json file where the coordinates of all the Countries are
+url  = 'https://raw.githubusercontent.com/python-visualization/folium/master/examples/data/world-countries.json'
+res = urlopen(url)
+data_json = json.loads(res.read())
 
 class Geo():
-    def __init__(self,dataset,data_json,anaoption,option):
+    def __init__(self,dataset,anaoption,option):
         self.df = dataset
-        self.data_json = data_json
         self.anaoption = anaoption
         self.option = option
+        self.data_json = data_json
 
 
     def showmap(self):
