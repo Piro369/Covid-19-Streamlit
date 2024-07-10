@@ -29,7 +29,6 @@ class Geo():
             self.option = 'new_cases'
         else:
             self.option = 'new_deaths'
-        print(self.option)
         
     def date_range(self):
         start_date = self.df['date'].min()

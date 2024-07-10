@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 from geographical import Geo
-
+from general import General
 
 st.header('COVID19 Dashboard')
 
@@ -20,7 +20,7 @@ def read_data():
 # Side bar Options 
 st.sidebar.title('Select any')
 overalloption = st.sidebar.selectbox('Select Any',
-            ['Geographical','General'])
+            ['General','Geographical'])
 
 # Showing the Dashboard based on User Input
 if overalloption == 'Geographical':
@@ -29,5 +29,8 @@ if overalloption == 'Geographical':
 
 else:
     st.subheader('General Analysis')
+    app = General(read_data())
+    app.showmetrics()
+    app.show_line()
 
     
