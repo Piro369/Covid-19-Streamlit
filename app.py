@@ -3,33 +3,27 @@ import pandas as pd
 from geographical import Geo
 from general import General
 
-st.header('COVID19 Dashboard')
-
+# Load the data and cache it to improve performance
+@st.cache_data
 def read_data():
-    coviddata = pd.read_csv('cleaned.csv')
-
-    # Removing Unnecessary Columns
-    remove_cols = [i for i in coviddata.columns if 'Unnamed' in i]
-    coviddata.drop(columns=remove_cols,inplace=True)
-
-    # Changing Datatype
+    coviddata = pd.read_csv('cleaned.csv',index_col=0)
     coviddata['date'] = pd.to_datetime(coviddata['date']).dt.date
-
+    coviddata['country'].replace('United States','United States of America',inplace=True)
     return coviddata
 
-# Side bar Options 
-st.sidebar.title('Select any')
-overalloption = st.sidebar.selectbox('Select Any',
-            ['General','Geographical'])
+df = read_data()
 
-# Showing the Dashboard based on User Input
+# Sidebar for navigation
+st.header('COVID19 Dashboard')
+overalloption = st.sidebar.selectbox('Select a Page',['Geographical','General'])
+
+
+# Conditional rendering based on the selected page
 if overalloption == 'Geographical':
-    app = Geo(read_data())
+    app = Geo(df)
     app.showmap()
-
 else:
-    st.subheader('General Analysis')
-    app = General(read_data())
+    app = General(df)
     app.showmetrics()
     app.show_line()
 

@@ -18,40 +18,42 @@ class Geo():
         self.df = dataset
         self.data_json = data_json
 
+    # Initialize analysis option and date range
         self.analysisoption()
         self.date_range()
 
+    #  Method to select the basis of analysis (Total Cases or Total Deaths)
     def analysisoption(self):
         self.anaoption = st.selectbox('Select on which Basis you want Analysis',
             ['Total Cases','Total Deaths'])
-    
+
+        # Set the option based on user selection
         if self.anaoption == 'Total Cases':
             self.option = 'new_cases'
         else:
             self.option = 'new_deaths'
         
+    # Method to add the date range
     def date_range(self):
         start_date = self.df['date'].min()
         end_date = self.df['date'].max()
 
         st_col,end_col = st.columns(2)
-
-        start_date= st_col.date_input('Enter the Start Date',min_value=start_date,
+        # Input for Date
+        start_date= st_col.date_input('Start Date',start_date,min_value=start_date,
                             max_value=end_date-timedelta(days=1))
 
-        end_date = end_col.date_input('Enter the Start Date',min_value=start_date+timedelta(days=1),
+        end_date = end_col.date_input('End Date',min_value=start_date+timedelta(days=1),
                             max_value=end_date)
 
         # Filtering Data on the basis of Dates Selected 
         filtered_df = self.df[(self.df['date']>start_date) & (self.df['date']<end_date)]
 
         self.actual_df = filtered_df.groupby(['iso_code','country'])[self.option].sum().reset_index()
-        self.actual_df[self.option] = self.actual_df[self.option]/100000
+        self.actual_df[self.option] = self.actual_df[self.option]/1000
         
-
-
+    # Show the Map
     def showmap(self):
-        self.actual_df[self.option] = pd.to_numeric(self.actual_df[self.option], errors='coerce').fillna(0)
 
         map = folium.Map(zoom_start=1,title='CartoDB positron',max_bounds=True)
         # Add Choropleth layer to the map
@@ -62,7 +64,7 @@ class Geo():
             columns=['iso_code',self.option],
             key_on='feature.id',
             fill_color='OrRd',
-            legend_name=f'{self.anaoption} (Lakhs)',
+            legend_name=f'{self.anaoption} (Thousands)',
             highlight=True,
             zoom_start=1,min_zoom=1
         ).add_to(map)
@@ -82,4 +84,4 @@ class Geo():
         )
 
         choropleth.geojson.add_to(map)
-        folium_static(map,width=700,height=450)
+        folium_static(map,width=900, height=500)
