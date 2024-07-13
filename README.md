@@ -24,11 +24,11 @@ Make sure you have the following libraries installed:
 ### Installation
 Clone the repository:
 ```
-git clone https://github.com/Piro369/Covid-19Dashboard-Streamlit.git
+git clone https://github.com/Piro369/Covid-19-Streamlit.git
 ```
 Navigate to the project directory:
 ```
-cd Covid-19Dashboard-Streamlit
+cd Covid-19-Streamlit
 ```
 Install the required dependencies:
 ```
