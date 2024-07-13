@@ -14,7 +14,7 @@ def read_data():
 df = read_data()
 
 # Sidebar for navigation
-st.header('COVID19 Dashboard')
+st.header('COVID-19 Dashboard')
 overalloption = st.sidebar.selectbox('Select a Page',['Geographical','General'])
 
 
