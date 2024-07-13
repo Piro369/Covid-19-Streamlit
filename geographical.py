@@ -84,4 +84,4 @@ class Geo():
         )
 
         choropleth.geojson.add_to(map)
-        folium_static(map,width=900, height=500)
+        folium_static(map,width=750, height=500)
